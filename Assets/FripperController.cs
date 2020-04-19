@@ -48,39 +48,42 @@ public class FripperController : MonoBehaviour
 
 
 
-        Debug.Log(Input.mousePosition.x);
-
-        //左タップした時左フリッパーを動かす
-        if (Input.mousePosition.x <= 320)
+        //スマホ用
+        foreach(Touch t in Input.touches)
         {
-            if (Input.GetMouseButtonDown(0) && tag == "LeftFripperTag")
+            if (t.phase == TouchPhase.Began)
             {
-                Debug.Log("左タップした時左フリッパーを動かす");
-                SetAngle(this.flickAngle);
+                if (t.position.x > Screen.width / 2 && tag == "RightFripperTag")
+                {
+                    Debug.Log("右タップ押した時フリッパーを動かす");
+                    SetAngle(this.flickAngle);
+                }
+                else if (t.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
+                {
+                    Debug.Log("左タップ押した時フリッパーを動かす");
+                    SetAngle(this.flickAngle);
+                }
+
+            }
+
+
+            //タップが離された時フリッパーを元に戻す
+            if (t.phase == TouchPhase.Ended)
+            {
+                if (t.position.x > Screen.width / 2 && tag == "RightFripperTag")
+                {
+                    Debug.Log("右タップ離した時フリッパーを戻す");
+                    SetAngle(this.defaultAngle);
+                }
+                else if (t.position.x <= Screen.width / 2 && tag == "LeftFripperTag")
+                {
+                    Debug.Log("左タップ離した時フリッパーを戻す");
+                    SetAngle(this.defaultAngle);
+                }
+
             }
         }
 
-        //右タップした時右フリッパーを動かす
-        else
-        {
-            if (Input.GetMouseButtonDown(0) && tag == "RightFripperTag")
-            {
-                Debug.Log("右タップした時右フリッパーを動かす");
-                SetAngle(this.flickAngle);
-            }
-        }
-
-        //タップが離された時フリッパーを元に戻す
-        if (Input.GetMouseButtonUp(0) && tag == "LeftFripperTag")
-            {
-                Debug.Log("左タップ離した時フリッパーを戻す");
-                SetAngle(this.defaultAngle);
-            }
-        if (Input.GetMouseButtonUp(0) && tag == "RightFripperTag")
-            {
-                Debug.Log("右タップ離した時フリッパーを戻す");
-                SetAngle(this.defaultAngle);
-            }
     }
 
     //フリッパーの傾きを設定
